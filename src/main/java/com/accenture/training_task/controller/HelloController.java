@@ -46,7 +46,7 @@ public class HelloController {
 
     @Deprecated
     @PostMapping("/addFavorite")
-    public ResponseEntity<Object> addFavourite(@NotEmpty @RequestParam int flightNumber, @Valid @RequestBody FlightData body) {
+    public ResponseEntity<Object> addFavorite(@NotEmpty @RequestParam int flightNumber, @Valid @RequestBody FlightData body) {
 
         if (dataStorage.getData().containsKey(flightNumber)) throw new RuntimeException(); // TODO: FLIGHT EXISTS EXEPTION
 
@@ -59,7 +59,7 @@ public class HelloController {
     }
     
     @PostMapping("/jpa/addFavorite")
-    public ResponseEntity<Object> addJPAFavourite(@Valid @RequestBody FlightData body) {
+    public ResponseEntity<Object> addJPAFavorite(@Valid @RequestBody FlightData body) {
     	dataRepository.findAll().forEach(data -> {
     		if (data.getFlightNumber().equals(body.getFlightNumber())) {    			
     			throw new RuntimeException(); // TODO: FLIGHT EXISTS EXEPTION
