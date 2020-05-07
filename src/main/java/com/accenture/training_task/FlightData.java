@@ -1,46 +1,73 @@
 package com.accenture.training_task;
 
-import com.accenture.training_task.flightAPI.Airline;
-import com.accenture.training_task.flightAPI.Arrival;
-import com.accenture.training_task.flightAPI.Departure;
-import com.accenture.training_task.flightAPI.Flight;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.validation.constraints.NotEmpty;
 
+@Entity
 public class FlightData {
 	
-	Departure departure;
-	Arrival arrival;
-	Airline airline;
-	Flight flight;
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	private Integer id;
 	
-	public FlightData(Departure departure, Arrival arrival, Airline airline, Flight flight) {
-		this.departure = departure;
-		this.arrival = arrival;
+	@NotEmpty(message = "Departure airport cannot be empty.")
+	private String departureairport;
+	
+	@NotEmpty(message = "Arrival airport cannot be empty.")
+	private String arrivalairport;
+	
+	@NotEmpty(message = "Airline cannot be empty.")
+	private String airline;
+	
+	@NotEmpty(message = "Flight number cannot be empty.")
+	private String flightnumber;
+	
+	protected FlightData() {
+		
+	}
+	
+	public FlightData(
+			@NotEmpty String departureAirport,
+			@NotEmpty String arrivalAirport,
+			@NotEmpty String airline,
+			@NotEmpty String flightNumber) {
+		this.departureairport = departureAirport;
+		this.arrivalairport = arrivalAirport;
 		this.airline = airline;
-		this.flight = flight;
+		this.flightnumber = flightNumber;
 	}
 	
-	public Departure getDeparture() {
-		return departure;
+	public String getFlightNumber() {
+		return flightnumber;
 	}
-	public void setDeparture(Departure departure) {
-		this.departure = departure;
+	public void setFlightNumber(String flightNumber) {
+		this.flightnumber = flightNumber;
 	}
-	public Arrival getArrival() {
-		return arrival;
+	public String getDepartureAirport() {
+		return departureairport;
 	}
-	public void setArrival(Arrival arrival) {
-		this.arrival = arrival;
+	public void setDepartureAirport(String departureAirport) {
+		this.departureairport = departureAirport;
 	}
-	public Airline getAirline() {
+	public String getArrivalAirport() {
+		return arrivalairport;
+	}
+	public void setArrivalAirport(String arrivalAirport) {
+		this.arrivalairport = arrivalAirport;
+	}
+	public String getAirline() {
 		return airline;
 	}
-	public void setAirline(Airline airline) {
+	public void setAirline(String airline) {
 		this.airline = airline;
 	}
-	public Flight getFlight() {
-		return flight;
-	}
-	public void setFlight(Flight flight) {
-		this.flight = flight;
+
+	@Override
+	public String toString() {
+		return "FlightData [departureAirport=" + departureairport + ", arrivalAirport=" + arrivalairport
+				+ ", airline=" + airline + ", flightNumber=" + flightnumber + "]";
 	}
 }
