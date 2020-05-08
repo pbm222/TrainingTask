@@ -7,9 +7,9 @@ import javax.validation.constraints.NotEmpty;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -33,7 +33,7 @@ public class HelloController {
 
     private DataStorage dataStorage = new DataStorage();
 
-    @RequestMapping("/")
+    @GetMapping("/flights")
     public String index() throws Exception {
 
         //Format an output
@@ -60,11 +60,8 @@ public class HelloController {
     
     @PostMapping("/jpa/addFavorite")
     public ResponseEntity<Object> addJPAFavorite(@Valid @RequestBody FlightData body) {
-    	dataRepository.findAll().forEach(data -> {
-    		if (data.getFlightNumber().equals(body.getFlightNumber())) {    			
-    			throw new RuntimeException(); // TODO: FLIGHT EXISTS EXEPTION
-    		}
-    	});
+    	
+    	if (dataRepository.findByFlightNumber(body.getFlightNumber()) != null) throw new RuntimeException(); // TODO: FLIGHT EXISTS EXCEPTION
     	
     	dataRepository.save(body);
     	

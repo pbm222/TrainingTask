@@ -1,10 +1,8 @@
 package com.accenture.training_task;
 
-import com.accenture.training_task.flightAPI.FlightAPIResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -27,17 +25,4 @@ public class TrainingTaskApplication {
 	public RestTemplate restTemplate(RestTemplateBuilder builder) {
 		return builder.build();
 	}
-
-	@Bean
-	public CommandLineRunner run(RestTemplate restTemplate) throws Exception {
-		return args -> {
-			 FlightAPIResponse quote = restTemplate.getForObject(
-					requestURL, FlightAPIResponse.class);
-			log.info(quote.toString());
-		};
-	}
-
-
-
-
 }
