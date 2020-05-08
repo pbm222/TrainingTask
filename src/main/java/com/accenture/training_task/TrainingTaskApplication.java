@@ -8,33 +8,20 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+//@EnableWebMvc
 @SpringBootApplication
+@EnableScheduling
+@EnableCaching
 public class TrainingTaskApplication {
-
-	private static final Logger log = LoggerFactory.getLogger(TrainingTaskApplication.class);
-
-	@Value("${api.request}")
-	private String requestURL;
 
 	public static void main(String[] args) {
 		SpringApplication.run(TrainingTaskApplication.class, args);
-	}
-
-	@Bean
-	public RestTemplate restTemplate(RestTemplateBuilder builder) {
-		return builder.build();
-	}
-
-	@Bean
-	public CommandLineRunner run(RestTemplate restTemplate) throws Exception {
-		return args -> {
-			 FlightAPIResponse quote = restTemplate.getForObject(
-					requestURL, FlightAPIResponse.class);
-			log.info(quote.toString());
-		};
 	}
 
 
