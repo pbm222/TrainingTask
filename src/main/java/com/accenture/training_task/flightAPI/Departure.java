@@ -1,15 +1,12 @@
 
 package com.accenture.training_task.flightAPI;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class Departure {
 
     private String airport;
-    private String timezone;
-    private String scheduled;
-    private String estimated;
+	private String timezone;
+	private String scheduled;
+	private String estimated;
 
     public Departure() {
     }

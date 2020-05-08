@@ -1,10 +1,6 @@
 
 package com.accenture.training_task.flightAPI;
 
-
-import java.util.HashMap;
-import java.util.Map;
-
 public class Datum {
 
     private String flightDate;
