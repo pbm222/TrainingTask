@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.accenture.training_task.DataRepository;
-import com.accenture.training_task.DataStorage;
-import com.accenture.training_task.FlightData;
 import com.accenture.training_task.flightAPI.FlightAPIResponse;
 import com.accenture.training_task.flightAPI.GetAPIObject;
+import com.accenture.training_task.flightData.DataRepository;
+import com.accenture.training_task.flightData.DataStorage;
+import com.accenture.training_task.flightData.FlightAlreadyExistsException;
+import com.accenture.training_task.flightData.FlightData;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -48,7 +49,8 @@ public class HelloController {
     @PostMapping("/addFavorite")
     public ResponseEntity<Object> addFavorite(@NotEmpty @RequestParam int flightNumber, @Valid @RequestBody FlightData body) {
 
-        if (dataStorage.getData().containsKey(flightNumber)) throw new RuntimeException(); // TODO: FLIGHT EXISTS EXEPTION
+        if (dataStorage.getData().containsKey(flightNumber))
+        	throw new FlightAlreadyExistsException("Flight with number " + body.getFlightNumber() + " is already added to the favorites");
 
         dataStorage.addData(flightNumber, body);
 
@@ -61,7 +63,8 @@ public class HelloController {
     @PostMapping("/jpa/addFavorite")
     public ResponseEntity<Object> addJPAFavorite(@Valid @RequestBody FlightData body) {
     	
-    	if (dataRepository.findByFlightNumber(body.getFlightNumber()) != null) throw new RuntimeException(); // TODO: FLIGHT EXISTS EXCEPTION
+    	if (dataRepository.findByFlightNumber(body.getFlightNumber()) != null)
+    		throw new FlightAlreadyExistsException("Flight with number " + body.getFlightNumber() + " is already added to the favorites");
     	
     	dataRepository.save(body);
     	

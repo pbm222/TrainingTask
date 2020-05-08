@@ -1,4 +1,4 @@
-package com.accenture.training_task;
+package com.accenture.training_task.flightData;
 
 import java.util.HashMap;
 
