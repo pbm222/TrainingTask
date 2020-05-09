@@ -1,17 +1,17 @@
 
-package com.accenture.training_task.flightAPI;
+package com.accenture.training_task.flightAPI.responseModel;
 
-public class Departure {
+public class Arrival {
 
     private String airport;
-	private String timezone;
-	private String scheduled;
-	private String estimated;
+    private String timezone;
+    private String scheduled;
+    private String estimated;
 
-    public Departure() {
+    public Arrival() {
     }
 
-    public Departure(String airport, String timezone, String scheduled, String estimated) {
+    public Arrival(String airport, String timezone, String scheduled, String estimated) {
         this.airport = airport;
         this.timezone = timezone;
         this.scheduled = scheduled;
@@ -34,7 +34,6 @@ public class Departure {
         this.timezone = timezone;
     }
 
-
     public String getScheduled() {
         return scheduled;
     }
@@ -51,9 +50,10 @@ public class Departure {
         this.estimated = estimated;
     }
 
+
     @Override
     public String toString() {
-        return "Departure{" +
+        return "Arrival{" +
                 "airport='" + airport + '\'' +
                 ", timezone='" + timezone + '\'' +
                 ", scheduled='" + scheduled + '\'' +

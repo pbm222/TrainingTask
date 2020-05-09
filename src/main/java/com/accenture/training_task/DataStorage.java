@@ -1,5 +1,7 @@
 package com.accenture.training_task;
 
+import com.accenture.training_task.model.FlightData;
+
 import java.util.HashMap;
 
 public class DataStorage {

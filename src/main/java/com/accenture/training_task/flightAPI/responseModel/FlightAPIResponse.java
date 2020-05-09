@@ -1,4 +1,4 @@
-package com.accenture.training_task.flightAPI;
+package com.accenture.training_task.flightAPI.responseModel;
 
 import java.util.List;
 

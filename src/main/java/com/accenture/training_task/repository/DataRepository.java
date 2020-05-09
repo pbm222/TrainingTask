@@ -1,5 +1,6 @@
-package com.accenture.training_task;
+package com.accenture.training_task.repository;
 
+import com.accenture.training_task.model.FlightData;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

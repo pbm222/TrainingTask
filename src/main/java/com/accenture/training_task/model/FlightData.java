@@ -1,4 +1,4 @@
-package com.accenture.training_task;
+package com.accenture.training_task.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -39,30 +39,45 @@ public class FlightData {
 		this.airline = airline;
 		this.flightnumber = flightNumber;
 	}
-	
-	public String getFlightNumber() {
-		return flightnumber;
+
+	public Integer getId() {
+		return id;
 	}
-	public void setFlightNumber(String flightNumber) {
-		this.flightnumber = flightNumber;
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
-	public String getDepartureAirport() {
+
+	public String getDepartureairport() {
 		return departureairport;
 	}
-	public void setDepartureAirport(String departureAirport) {
-		this.departureairport = departureAirport;
+
+	public void setDepartureairport(String departureairport) {
+		this.departureairport = departureairport;
 	}
-	public String getArrivalAirport() {
+
+	public String getArrivalairport() {
 		return arrivalairport;
 	}
-	public void setArrivalAirport(String arrivalAirport) {
-		this.arrivalairport = arrivalAirport;
+
+	public void setArrivalairport(String arrivalairport) {
+		this.arrivalairport = arrivalairport;
 	}
+
 	public String getAirline() {
 		return airline;
 	}
+
 	public void setAirline(String airline) {
 		this.airline = airline;
+	}
+
+	public String getFlightnumber() {
+		return flightnumber;
+	}
+
+	public void setFlightnumber(String flightnumber) {
+		this.flightnumber = flightnumber;
 	}
 
 	@Override
