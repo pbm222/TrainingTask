@@ -5,9 +5,13 @@ import java.util.List;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import javax.xml.transform.sax.SAXResult;
 
+import com.accenture.training_task.exceptions.NoFlightsException;
 import com.accenture.training_task.flightAPI.APIservice;
 import com.accenture.training_task.flightAPI.responseModel.Datum;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,6 +26,8 @@ import com.accenture.training_task.model.FlightData;
 @Controller
 public class HelloController {
 
+    private static final Logger logger = LoggerFactory.getLogger(HelloController.class);
+
     @Autowired
     private APIservice APIservice;
 
@@ -32,15 +38,18 @@ public class HelloController {
 
     @GetMapping("/flights")
     public String getApiResponse(Model model){
-        List<FlightData> flightDataList= APIservice.getFlightList(); //ADD: if API returned null
+        logger.trace("GET flights method accessed");
+
+        List<FlightData> flightDataList= APIservice.getFlightList();
         model.addAttribute("flights", flightDataList);
         return "flights";
     }
 
-    @GetMapping("/flights/{departureAirport}") //possibly implement search
+
+ /*   @GetMapping("/flights/{departureAirport}") //possibly implement search
     public List<Datum> getAllData(@PathVariable("departureAirport") String departureAirport) {
         return APIservice.getObjectfromAPIbyDepartureAirport(departureAirport).getData();
-    }
+    }*/
 
 
     @Deprecated
@@ -51,7 +60,7 @@ public class HelloController {
             throw new RuntimeException(); // TODO: FLIGHT EXISTS EXEPTION
 
         dataStorage.addData(flightNumber, body);
-
+        logger.trace("Add flight to local storage");
         URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/favorites").build().toUri();
 
         System.out.println(dataStorage.getData());
@@ -70,8 +79,9 @@ public class HelloController {
         dataRepository.save(body);
 
         URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/jpa/favorites").build().toUri();
-
+        logger.trace("POST flight to H2");
         return ResponseEntity.created(location).build();
     }
+
 
 }
