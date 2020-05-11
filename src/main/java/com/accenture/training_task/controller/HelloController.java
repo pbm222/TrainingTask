@@ -1,49 +1,52 @@
 package com.accenture.training_task.controller;
 
 import java.net.URI;
+import java.util.List;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.accenture.training_task.flightAPI.FlightAPIResponse;
-import com.accenture.training_task.flightAPI.GetAPIObject;
+import com.accenture.training_task.flightAPI.APIservice;
+import com.accenture.training_task.flightAPI.responseModel.Datum;
 import com.accenture.training_task.flightData.DataRepository;
 import com.accenture.training_task.flightData.DataStorage;
 import com.accenture.training_task.flightData.FlightAlreadyExistsException;
 import com.accenture.training_task.flightData.FlightData;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
-@RestController
+@Controller
 public class HelloController {
 
     @Autowired
-    private GetAPIObject getAPIObject;
-    
+    private APIservice APIservice;
+
     @Autowired
     private DataRepository dataRepository;
 
     private DataStorage dataStorage = new DataStorage();
 
     @GetMapping("/flights")
-    public String index() throws Exception {
+    public String getApiResponse(Model model){
+        List<FlightData> flightDataList= APIservice.getFlightList(); //ADD: if API returned null
+        model.addAttribute("flights", flightDataList);
+        return "flights";
+    }
 
-        //Format an output
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        FlightAPIResponse flightAPIResponse = getAPIObject.getObjectfromAPI();
-        String jsonOutput = gson.toJson(flightAPIResponse);
+    @GetMapping("/flights/{departureAirport}") //possibly implement search
+    public List<Datum> getAllData(@PathVariable("departureAirport") String departureAirport) {
+        return APIservice.getObjectfromAPIbyDepartureAirport(departureAirport).getData();
+    }
 
-        return jsonOutput;
-    }	
 
     @Deprecated
     @PostMapping("/addFavorite")
@@ -61,11 +64,12 @@ public class HelloController {
     }
     
     @PostMapping("/jpa/addFavorite")
-    public ResponseEntity<Object> addJPAFavorite(@Valid @RequestBody FlightData body) {
+    public ResponseEntity<Object> addJPAFavorite(@PathVariable String flightnumber, @Valid @RequestBody FlightData body) {
     	
     	if (dataRepository.findByFlightNumber(body.getFlightNumber()) != null)
     		throw new FlightAlreadyExistsException("Flight with number " + body.getFlightNumber() + " is already added to the favorites");
     	
+		body.setFlightNumber(flightnumber);
     	dataRepository.save(body);
     	
         URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/jpa/favorites").build().toUri();
