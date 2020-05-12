@@ -1,8 +1,4 @@
-
-package com.accenture.training_task.model;
-
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+package com.accenture.training_task.flightData;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @ApiModel(description = "Details about Flight Data")
@@ -53,44 +51,39 @@ public class FlightData {
 		this.airline = airline;
 		this.flightNumber = flightNumber;
 	}
-
+	
 	public Integer getId() {
 		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getDepartureAirport() {
-		return departureAirport;
-	}
-
-	public void setDepartureAirport(String departureAirport) {
-		this.departureAirport = departureAirport;
-	}
-
-	public String getArrivalAirport() {
-		return arrivalAirport;
-	}
-
-	public void setArrivalAirport(String arrivalAirport) {
-		this.arrivalAirport = arrivalAirport;
-	}
-
-	public String getAirline() {
-		return airline;
-	}
-
-	public void setAirline(String airline) {
-		this.airline = airline;
 	}
 
 	public String getFlightNumber() {
 		return flightNumber;
 	}
-
 	public void setFlightNumber(String flightNumber) {
 		this.flightNumber = flightNumber;
+	}
+	public String getDepartureAirport() {
+		return departureAirport;
+	}
+	public void setDepartureAirport(String departureAirport) {
+		this.departureAirport = departureAirport;
+	}
+	public String getArrivalAirport() {
+		return arrivalAirport;
+	}
+	public void setArrivalAirport(String arrivalAirport) {
+		this.arrivalAirport = arrivalAirport;
+	}
+	public String getAirline() {
+		return airline;
+	}
+	public void setAirline(String airline) {
+		this.airline = airline;
+	}
+
+	@Override
+	public String toString() {
+		return "FlightData [departureAirport=" + departureAirport + ", arrivalAirport=" + arrivalAirport
+				+ ", airline=" + airline + ", flightNumber=" + flightNumber + "]";
 	}
 }

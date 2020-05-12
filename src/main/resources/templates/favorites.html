@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Flights</title>
+    <title>Favorites</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 </head>
@@ -22,37 +22,26 @@
             <td th:text="${flight.arrivalAirport}"></td>
             <td th:text="${flight.airline}"></td>
             <td th:text="${flight.flightNumber}"></td>
-            <td><a class="btn btn-dark" th:attr="onclick=|addData('${flight.departureAirport}',
-                    '${flight.arrivalAirport}',
-                    '${flight.airline}',
-                    '${flight.flightNumber}')|"
-                >Add Favorite</a>
-            </td>
+            <td><a class="btn btn-dark" th:attr="onclick=|deleteData(${flight.flightNumber})|">Remove Favorite</a></td>
         </tr>
     </table>
 
 
 </div>
 <script th:inline="javascript">
-	function addData(departureAirport, arrivalAirport, airline, flightNumber) {
+	function deleteData(flightNumber) {
 		let request = new XMLHttpRequest();
 		request.onreadystatechange = function() {
 		    if (this.readyState == 4) {
-		 		if (this.status == 201) {
-		 			alert("Added.")
+		 		if (this.status == 200) {
+		 			location.reload();
 		 		} else {
 		 			alert(`Error ${this.status}. Message: ${JSON.parse(this.response).message}`);
 		 		}
 		    }
 		};
-		request.open("POST", "/jpa/favorites/add/" + flightNumber, true);
-		request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-		request.send(JSON.stringify({
-		    "departureAirport": departureAirport,
-		    "arrivalAirport": arrivalAirport,
-		    "airline": airline,
-		    "flightNumber": flightNumber
-		}));
+		request.open("DELETE", "/jpa/favorites/remove/" + flightNumber, true);
+		request.send();
 	}
 </script>
 </body>
