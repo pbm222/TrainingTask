@@ -52,6 +52,10 @@ public class FlightData {
 		this.flightNumber = flightNumber;
 	}
 	
+	public Integer getId() {
+		return id;
+	}
+	
 	public String getFlightNumber() {
 		return flightNumber;
 	}
