@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -27,6 +28,7 @@ import com.accenture.training_task.flightData.DataStorage;
 import com.accenture.training_task.flightData.FlightData;
 
 @Controller
+@RequestMapping("/api")
 public class HelloController {
 
     @Autowired
@@ -66,7 +68,7 @@ public class HelloController {
 
         dataStorage.addData(flightNumber, body);
 
-        URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/favorites").build().toUri();
+        URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/favorites").build().toUri();
         
         System.out.println(dataStorage.getData());
         return ResponseEntity.created(location).build();
@@ -81,7 +83,7 @@ public class HelloController {
 		body.setFlightNumber(flightNumber);
     	dataRepository.save(body);
     	
-        URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/jpa/favorites").build().toUri();
+        URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/jpa/favorites").build().toUri();
         
         return ResponseEntity.created(location).build();
     }

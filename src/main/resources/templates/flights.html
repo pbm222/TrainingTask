@@ -39,13 +39,14 @@
 		request.onreadystatechange = function() {
 		    if (this.readyState == 4) {
 		 		if (this.status == 201) {
-		 			alert("Added.")
+		 			alert("Added.");
+		 			window.location = request.getResponseHeader("Location");
 		 		} else {
 		 			alert(`Error ${this.status}. Message: ${JSON.parse(this.response).message}`);
 		 		}
 		    }
 		};
-		request.open("POST", "/jpa/favorites/add/" + flightNumber, true);
+		request.open("POST", "/api/jpa/favorites/add/" + flightNumber, true);
 		request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 		request.send(JSON.stringify({
 		    "departureAirport": departureAirport,
