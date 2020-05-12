@@ -19,11 +19,11 @@
             <th></th>
         </tr>
         <tr th:each="flight : ${flights}">
-            <td th:text="${flight.departureairport}"></td>
-            <td th:text="${flight.arrivalairport}"></td>
+            <td th:text="${flight.departureAirport}"></td>
+            <td th:text="${flight.arrivalAirport}"></td>
             <td th:text="${flight.airline}"></td>
-            <td th:text="${flight.flightnumber}"></td>
-            <td><a class="btn btn-dark" th:href="@{/jpa/addFavorite/{flightnumber}(flightnumber=${flight.flightnumber})}">Add</a></td>
+            <td th:text="${flight.flightNumber}"></td>
+            <td><a class="btn btn-dark" th:href="@{/jpa/addFavorite/{flightNumber}(flightNumber=${flight.flightNumber})}">Add</a></td>
         </tr>
     </table>
 

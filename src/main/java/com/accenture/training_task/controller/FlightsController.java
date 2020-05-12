@@ -5,11 +5,13 @@ import java.util.List;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
-import javax.xml.transform.sax.SAXResult;
 
-import com.accenture.training_task.exceptions.NoFlightsException;
+//import com.accenture.training_task.DataStorage;
+import com.accenture.training_task.DataStorage;
 import com.accenture.training_task.flightAPI.APIservice;
-import com.accenture.training_task.flightAPI.responseModel.Datum;
+import com.accenture.training_task.exceptions.FlightAlreadyExistsException;
+import com.accenture.training_task.model.FlightData;
+import com.accenture.training_task.repository.DataRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +21,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.accenture.training_task.repository.DataRepository;
-import com.accenture.training_task.DataStorage;
-import com.accenture.training_task.model.FlightData;
-
 @Controller
-public class HelloController {
+@RequestMapping("/api")
+public class FlightsController {
 
-    private static final Logger logger = LoggerFactory.getLogger(HelloController.class);
+    private static final Logger logger = LoggerFactory.getLogger(FlightsController.class);
 
     @Autowired
     private APIservice APIservice;
@@ -56,8 +55,7 @@ public class HelloController {
     @PostMapping("/addFavorite")
     public ResponseEntity<Object> addFavorite(@NotEmpty @RequestParam int flightNumber, @Valid @RequestBody FlightData body) {
 
-        if (dataStorage.getData().containsKey(flightNumber))
-            throw new RuntimeException(); // TODO: FLIGHT EXISTS EXEPTION
+        if (dataStorage.getData().containsKey(flightNumber)) throw new RuntimeException(); // TODO: FLIGHT EXISTS EXEPTION
 
         dataStorage.addData(flightNumber, body);
         logger.trace("Add flight to local storage");
@@ -66,22 +64,19 @@ public class HelloController {
         System.out.println(dataStorage.getData());
         return ResponseEntity.created(location).build();
     }
+    
+    @PostMapping("/jpa/addFavorite/{flightNumber}")
+    public ResponseEntity<Object> addJPAFavorite(@PathVariable String flightNumber, @Valid @RequestBody FlightData body) {
+    	
+    	if (dataRepository.findByFlightNumber(body.getFlightNumber()) != null)
+    		throw new FlightAlreadyExistsException("Flight with number " + body.getFlightNumber() + " is already added to the favorites");
 
-    @PostMapping("/jpa/addFavorite/{flightnumber}")
-    public ResponseEntity<Object> addJPAFavorite(@PathVariable String flightnumber, @Valid @RequestBody FlightData body) {
-        dataRepository.findAll().forEach(data -> {
-            if (data.getFlightnumber().equals(body.getFlightnumber())) {
-                throw new RuntimeException(); // TODO: FLIGHT EXISTS EXEPTION
-            }
-        });
-
-        body.setFlightnumber(flightnumber);
-        dataRepository.save(body);
-
+		body.setFlightNumber(flightNumber);
+    	dataRepository.save(body);
+    	
         URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/jpa/favorites").build().toUri();
         logger.trace("POST flight to H2");
         return ResponseEntity.created(location).build();
     }
-
 
 }

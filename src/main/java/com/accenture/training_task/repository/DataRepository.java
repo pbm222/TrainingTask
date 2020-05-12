@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DataRepository extends JpaRepository<FlightData, Integer> {
 
+    public FlightData findByFlightNumber(String flightNumber);
 }
