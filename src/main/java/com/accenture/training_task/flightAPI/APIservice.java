@@ -1,6 +1,6 @@
 package com.accenture.training_task.flightAPI;
 
-import com.accenture.training_task.FlightData;
+import com.accenture.training_task.model.FlightData;
 import com.accenture.training_task.exceptions.NoFlightsException;
 import com.accenture.training_task.flightAPI.responseModel.Datum;
 import com.accenture.training_task.flightAPI.responseModel.FlightAPIResponse;
@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;

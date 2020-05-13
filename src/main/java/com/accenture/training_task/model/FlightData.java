@@ -1,4 +1,4 @@
-package com.accenture.training_task;
+package com.accenture.training_task.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

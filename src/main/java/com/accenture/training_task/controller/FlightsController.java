@@ -6,22 +6,28 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
+import com.accenture.training_task.repository.DataRepository;
+import com.accenture.training_task.DataStorage;
+import com.accenture.training_task.exceptions.FlightAlreadyExistsException;
+import com.accenture.training_task.exceptions.FlightDoesNotExistException;
+import com.accenture.training_task.flightAPI.APIservice;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.accenture.training_task.FlightData;
+import com.accenture.training_task.model.FlightData;
 
 @Controller
-public class HelloController {
+@RequestMapping("/api")
+public class FlightsController {
+
+    private static final Logger logger = LoggerFactory.getLogger(FlightsController.class);
 
     @Autowired
     private APIservice apIservice;
@@ -49,6 +55,7 @@ public class HelloController {
     
     @GetMapping("/jpa/favorites")
     public String showFavorites(Model model){
+        logger.trace("GET favourite flights method accessed");
         List<FlightData> flightDataList= dataRepository.findAll();
         model.addAttribute("flights", flightDataList);
         return "favorites";
@@ -79,7 +86,7 @@ public class HelloController {
 		body.setFlightNumber(flightNumber);
     	dataRepository.save(body);
     	
-        URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/jpa/favorites").build().toUri();
+        URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/jpa/favorites").build().toUri();
         logger.trace("POST flight to H2");
         return ResponseEntity.created(location).build();
     }
@@ -92,7 +99,7 @@ public class HelloController {
     	if (data == null) throw new FlightDoesNotExistException("This flight is not in your favorites.");
     	
     	dataRepository.delete(data);
-    	
+        logger.trace("DELETE flight from H2");
     	return ResponseEntity.ok().build();
     }
 
