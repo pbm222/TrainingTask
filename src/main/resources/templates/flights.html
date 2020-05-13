@@ -39,7 +39,8 @@
 		request.onreadystatechange = function() {
 		    if (this.readyState == 4) {
 		 		if (this.status == 201) {
-		 			alert("Added.")
+		 			alert("Added.");
+		 			window.location = request.getResponseHeader("Location");
 		 		} else {
 		 			alert(`Error ${this.status}. Message: ${JSON.parse(this.response).message}`);
 		 		}

@@ -6,28 +6,22 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
-import com.accenture.training_task.exceptions.FlightAlreadyExistsException;
-import com.accenture.training_task.DataStorage;
-import com.accenture.training_task.DataRepository;
-import com.accenture.training_task.exceptions.FlightDoesNotExistException;
-import com.accenture.training_task.flightAPI.APIservice;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.accenture.training_task.FlightData;
 
 @Controller
-@RequestMapping("/api")
-public class FlightsController {
-
-    private static final Logger logger = LoggerFactory.getLogger(FlightsController.class);
+public class HelloController {
 
     @Autowired
     private APIservice apIservice;
@@ -52,7 +46,7 @@ public class FlightsController {
     public List<Datum> getAllData(@PathVariable("departureAirport") String departureAirport) {
         return APIservice.getObjectfromAPIbyDepartureAirport(departureAirport).getData();
     }*/
-
+    
     @GetMapping("/jpa/favorites")
     public String showFavorites(Model model){
         List<FlightData> flightDataList= dataRepository.findAll();
@@ -71,7 +65,7 @@ public class FlightsController {
         dataStorage.addData(flightNumber, body);
         logger.trace("Add flight to local storage");
         URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/favorites").build().toUri();
-        
+
         System.out.println(dataStorage.getData());
         return ResponseEntity.created(location).build();
     }
@@ -92,13 +86,13 @@ public class FlightsController {
 
     @DeleteMapping("/jpa/favorites/remove/{flightNumber}")
     public ResponseEntity<Object> removeFavorite(@PathVariable String flightNumber) {
-
+    	
     	FlightData data = dataRepository.findByFlightNumber(flightNumber);
-
+    	
     	if (data == null) throw new FlightDoesNotExistException("This flight is not in your favorites.");
-
+    	
     	dataRepository.delete(data);
-
+    	
     	return ResponseEntity.ok().build();
     }
 

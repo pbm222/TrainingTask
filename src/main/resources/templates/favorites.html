@@ -22,7 +22,7 @@
             <td th:text="${flight.arrivalAirport}"></td>
             <td th:text="${flight.airline}"></td>
             <td th:text="${flight.flightNumber}"></td>
-            <td><a class="btn btn-dark" th:attr="onclick=|deleteData(${flight.flightNumber})|">Remove Favorite</a></td>
+            <td><a class="btn btn-dark" th:attr="onclick=|deleteData('${flight.flightNumber}')|">Remove Favorite</a></td>
         </tr>
     </table>
 
