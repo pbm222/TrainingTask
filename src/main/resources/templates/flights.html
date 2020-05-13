@@ -45,7 +45,7 @@
 		 		}
 		    }
 		};
-		request.open("POST", "/jpa/favorites/add/" + flightNumber, true);
+		request.open("POST", "/api/jpa/favorites/add/" + flightNumber, true);
 		request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 		request.send(JSON.stringify({
 		    "departureAirport": departureAirport,

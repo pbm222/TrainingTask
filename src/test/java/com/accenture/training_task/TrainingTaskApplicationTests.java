@@ -1,7 +1,6 @@
 package com.accenture.training_task;
 
 import com.accenture.training_task.controller.FlightsController;
-import com.accenture.training_task.model.FlightData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

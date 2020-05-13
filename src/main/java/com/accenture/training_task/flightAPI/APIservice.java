@@ -1,9 +1,9 @@
 package com.accenture.training_task.flightAPI;
 
+import com.accenture.training_task.FlightData;
 import com.accenture.training_task.exceptions.NoFlightsException;
 import com.accenture.training_task.flightAPI.responseModel.Datum;
 import com.accenture.training_task.flightAPI.responseModel.FlightAPIResponse;
-import com.accenture.training_task.model.FlightData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +32,6 @@ public class APIservice {
 
     private FlightAPIResponse flightAPIResponse;
 
-
-    @Cacheable(value = "flights")
     @Scheduled(fixedRateString = "${fixedRate.in.milliseconds}")
     public void cronJob() {
 

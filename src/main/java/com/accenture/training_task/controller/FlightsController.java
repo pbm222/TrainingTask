@@ -6,31 +6,22 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
-//import com.accenture.training_task.DataStorage;
-import com.accenture.training_task.DataStorage;
-import com.accenture.training_task.flightAPI.APIservice;
 import com.accenture.training_task.exceptions.FlightAlreadyExistsException;
-import com.accenture.training_task.model.FlightData;
-import com.accenture.training_task.repository.DataRepository;
+import com.accenture.training_task.DataStorage;
+import com.accenture.training_task.DataRepository;
+import com.accenture.training_task.exceptions.FlightDoesNotExistException;
+import com.accenture.training_task.flightAPI.APIservice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.accenture.training_task.flightAPI.APIservice;
-import com.accenture.training_task.flightAPI.responseModel.Datum;
-import com.accenture.training_task.flightData.DataRepository;
-import com.accenture.training_task.flightData.DataStorage;
-import com.accenture.training_task.flightData.FlightAlreadyExistsException;
-import com.accenture.training_task.flightData.FlightData;
+import com.accenture.training_task.FlightData;
 
 @Controller
 @RequestMapping("/api")
@@ -39,18 +30,19 @@ public class FlightsController {
     private static final Logger logger = LoggerFactory.getLogger(FlightsController.class);
 
     @Autowired
-    private APIservice APIservice;
+    private APIservice apIservice;
 
     @Autowired
     private DataRepository dataRepository;
 
     private DataStorage dataStorage = new DataStorage();
 
+    @Cacheable(value = "flights")
     @GetMapping("/flights")
     public String getApiResponse(Model model){
         logger.trace("GET flights method accessed");
 
-        List<FlightData> flightDataList= APIservice.getFlightList();
+        List<FlightData> flightDataList= apIservice.getFlightList();
         model.addAttribute("flights", flightDataList);
         return "flights";
     }

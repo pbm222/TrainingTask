@@ -1,4 +1,4 @@
-package com.accenture.training_task.flightData;
+package com.accenture.training_task;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
