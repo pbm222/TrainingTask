@@ -1,9 +1,9 @@
 package com.accenture.training_task.flightAPI;
 
-import com.accenture.training_task.model.FlightData;
 import com.accenture.training_task.exceptions.NoFlightsException;
 import com.accenture.training_task.flightAPI.responseModel.Datum;
 import com.accenture.training_task.flightAPI.responseModel.FlightAPIResponse;
+import com.accenture.training_task.model.FlightData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +60,7 @@ public class APIservice {
                 flightDataList.add(new FlightData(d.getDeparture().getAirport(),
                         d.getArrival().getAirport(), d.getAirline().getName(), d.getFlight().getNumber()));
             });
-        }catch (NullPointerException e){
+        } catch (NullPointerException e){
             throw new NoFlightsException("No flights' list available!");
         }
             return flightDataList;

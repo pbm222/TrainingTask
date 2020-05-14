@@ -1,18 +1,20 @@
 package com.accenture.training_task;
 
 import com.accenture.training_task.model.FlightData;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 
+@Component
 public class DataStorage {
 
-    private HashMap<Integer, FlightData> data;
+    private HashMap<String, FlightData> data;
 
     public DataStorage() {
-        this.data = new HashMap<Integer, FlightData>();
+        this.data = new HashMap();
     }
 
-    public HashMap<Integer, FlightData> getData() {
+    public HashMap<String, FlightData> getData() {
         return data;
     }
 
@@ -20,7 +22,7 @@ public class DataStorage {
         return this.data.get(flightNumber);
     }
 
-    public void addData(Integer flightNumber, FlightData data) {
+    public void addData(String flightNumber, FlightData data) {
         this.data.put(flightNumber, data);
 
     }
