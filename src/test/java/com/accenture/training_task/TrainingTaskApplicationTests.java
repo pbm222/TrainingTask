@@ -11,20 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.io.File;
-import java.nio.file.Files;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -56,13 +51,14 @@ public class TrainingTaskApplicationTests {
 
     @Test
     public void testFlightsPage() throws Exception {
-        File flights = new ClassPathResource("templates/flights.html").getFile();
-        String html = new String((Files.readAllBytes(flights.toPath())));
+
+        Thread.sleep(5000);;
 
         this.mockMvc.perform(get("/api/flights"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.TEXT_HTML_VALUE))
-                .andExpect(content().string(html))
+                .andExpect(content().contentType("text/html;charset=UTF-8"))
+                .andExpect(view().name("flights"))
+                .andExpect(model().attributeExists("flights"))
                 .andDo(print());
     }
 
